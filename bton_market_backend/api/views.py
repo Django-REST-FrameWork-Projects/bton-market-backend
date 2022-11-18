@@ -10,8 +10,8 @@ from .models import OnSaleItems
 def apiOverview(request):
     api_urls = {
         'ItemsOnSell': '/onsale-items/',
-        'Detail View': '/task-detail/<str:pk>',
-        'Create': 'task-create',
+        'Detail View': '/onsale-items-detail/<str:pk>',
+        'Create': 'onsale-create',
         'Update': '/task-update/<str:pk>',
         'Delete' : '/task-delete/<str:pk>'
     }
@@ -26,3 +26,11 @@ def onSellItemsList(request):
     serializer = OnSaleItemsSerializer(onSellItems, many=True)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def onSellItemsCreate(request):
+    serializer = OnSaleItemsSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
